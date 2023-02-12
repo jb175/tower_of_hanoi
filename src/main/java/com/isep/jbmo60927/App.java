@@ -21,6 +21,7 @@ public class App {
     //initial state to begin with
     private static final Peg[] INIT_GAME_PEGS = new Peg[] {
         new Peg(new Disc[] {
+            new Disc(4),
             new Disc(3),
             new Disc(2),
             new Disc(1),
@@ -38,6 +39,7 @@ public class App {
         new Peg(new Disc[] {
         }),
         new Peg(new Disc[] {
+            new Disc(4),
             new Disc(3),
             new Disc(2),
             new Disc(1),
@@ -59,14 +61,14 @@ public class App {
 
         //objective
         final GameState objectiveGameState = new GameState(OBJECTIVE_GAME_PEGS);
-        if (LOGGER.isLoggable(Level.INFO))
-            LOGGER.log(Level.INFO, String.format("%s%n%s", "objective:", objectiveGameState.toString()));
+        if (LOGGER.isLoggable(Level.FINE))
+            LOGGER.log(Level.FINE, String.format("%s%n%s", "objective:", objectiveGameState.toString()));
 
         //first state
         GameState gameState = new GameState(INIT_GAME_PEGS);
         this.gameStates.add(gameState);
-        if (LOGGER.isLoggable(Level.INFO))
-            LOGGER.log(Level.INFO, String.format("%s%n%s", "begining:", gameState.toString()));
+        if (LOGGER.isLoggable(Level.FINE))
+            LOGGER.log(Level.FINE, String.format("%s%n%s", "begining:", gameState.toString()));
 
         int checkForChildren = 0;
 

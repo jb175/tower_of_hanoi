@@ -30,7 +30,7 @@ public class GameState {
     //number of discs into this state (should be the same for every state)
     private final int discNumber;
     //history of states
-    private final int[][] movesBefore;
+    private final GameState[] stateHistory;
 
     /**
      * constructor for an initial state
@@ -42,7 +42,7 @@ public class GameState {
         this.level = 0;
         this.pegList = pegList;
         this.discNumber = getDiscNumber(this.pegList);
-        this.movesBefore = new int[0][0];
+        this.stateHistory = new GameState[0];
 
         //we verify if the data seems correct
         if (Boolean.TRUE.equals(ENABLE_VERIFICATION))
@@ -64,10 +64,10 @@ public class GameState {
         this.pegList = makeAMove(pegListBuilder, move);
         this.discNumber = getDiscNumber(this.pegList);
 
-        final ArrayList<int[]> moveHistoryBuilder = new ArrayList<>();
-        Collections.addAll(moveHistoryBuilder, gameStateBefore.getMovesBefore());
-        moveHistoryBuilder.add(move);
-        this.movesBefore = moveHistoryBuilder.toArray(new int[moveHistoryBuilder.size()][]);
+        final ArrayList<GameState> stateHistoryBuilder = new ArrayList<>();
+        Collections.addAll(stateHistoryBuilder, gameStateBefore.getStateHistory());
+        stateHistoryBuilder.add(gameStateBefore);
+        this.stateHistory = stateHistoryBuilder.toArray(new GameState[stateHistoryBuilder.size()]);
 
         //we verify if the data seems correct
         if (Boolean.TRUE.equals(ENABLE_VERIFICATION))
@@ -213,7 +213,6 @@ public class GameState {
 
         str.append(this.drawLevel()+"\n");
         str.append(this.draw()+"\n");
-        str.append(this.drawMoves()+"\n");
         str.append(this.drawPossibleMoves());
 
         return str.toString();
@@ -298,9 +297,10 @@ public class GameState {
      */
     public final String drawMoves() {
         final StringBuilder st = new StringBuilder("move history:");
-        for (final int[] moveHistory : this.movesBefore) {
-            st.append(String.format("%n%d -> %d", moveHistory[0], moveHistory[1]));
+        for (int i = 0; i < this.stateHistory.length; i++) {
+            st.append(String.format("%n%d/%n%s%n", i, this.stateHistory[i].toString()));
         }
+        st.append(String.format("%n%d/%n%s%n", this.stateHistory.length, this.toString()));
         return st.toString();
     }
 
@@ -320,15 +320,6 @@ public class GameState {
      */
     public Peg[] getPegList() {
         return pegList;
-    }
-
-    
-    /** 
-     * get the history of states done before this state
-     * @return int[][]
-     */
-    public int[][] getMovesBefore() {
-        return movesBefore;
     }
 
     
@@ -367,5 +358,14 @@ public class GameState {
             discNumber += peg.getDiscs().length;
         }
         return discNumber;
+    }
+
+    
+    /**
+     * get the state history to know how we get to this state in the shortest path
+     * @return GameState[]
+     */
+    private final GameState[] getStateHistory() {
+        return stateHistory;
     }
 }
