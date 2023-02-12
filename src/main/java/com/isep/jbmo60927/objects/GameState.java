@@ -283,7 +283,7 @@ public class GameState {
      */
     private final String drawPossibleMoves() {
         final int[][] possibilites = this.getPossibleMoves();
-        final StringBuilder str = new StringBuilder(String.format("%nThere is %d move possibilities:", possibilites.length));
+        final StringBuilder str = new StringBuilder(String.format("There is %d move possibilities:", possibilites.length));
 
         for (final int[] possibility : possibilites)
             str.append(String.format("%n - %d -> %d", possibility[0], possibility[1]));
@@ -297,9 +297,9 @@ public class GameState {
      * @return String
      */
     public final String drawMoves() {
-        final StringBuilder st = new StringBuilder("move history:\n");
+        final StringBuilder st = new StringBuilder("move history:");
         for (final int[] moveHistory : this.movesBefore) {
-            st.append(String.format("%d -> %d%n", moveHistory[0], moveHistory[1]));
+            st.append(String.format("%n%d -> %d", moveHistory[0], moveHistory[1]));
         }
         return st.toString();
     }
