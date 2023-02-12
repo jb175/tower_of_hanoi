@@ -20,10 +20,10 @@ public class MyFormatter extends Formatter {
         final String methodName = rec.getSourceMethodName(); //logger method
         final String level = rec.getLevel().toString(); //log level
         final String message = rec.getMessage(); //log message
+        final Throwable errorCause = rec.getThrown(); //log error
 
-        try {
-            final Throwable errorCause = rec.getThrown(); //if the log contain an error
-
+        //if the error we just get is not null (an error has been thrown)
+        if (errorCause != null) {
             StringBuilder out = new StringBuilder(); //we create a string builder
 
             //we add basic log informations
@@ -37,7 +37,7 @@ public class MyFormatter extends Formatter {
             //and we return the custom error log
             return out.toString();
 
-        } catch (Exception e) {
+        } else {
             //if the log doesn't get any error we return the basic custom log
             return String.format("[%s][%s %s] %s: %s %n", date, className, methodName, level, message);
         }
